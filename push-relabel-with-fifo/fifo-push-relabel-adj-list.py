@@ -120,47 +120,6 @@ class MaxFlow:
             self.relabel(u, height)  # Relabel the vertex to update its height
             self.push(u, excess, height, queue, inQueue)  # Push flow from the vertex
 
-        # Print the flow of each edge in the residual graph
-        print("Flow in the residual graph:")
-        edges = []
-        flows = []
-        for u in self.residualGraph.adjacencyList:
-            for v in self.residualGraph.adjacencyList[u]:
-                original_capacity = (
-                    self.graph.getEdge(u, v.i).capacity
-                    if self.graph.getEdge(u, v.i)
-                    else 0
-                )
-                flow = original_capacity - v.capacity
-                if flow > 0:
-                    print(f"Flow from {u} to {v.i}: {flow}")
-                    edges.append((u, v.i))
-                    flows.append((flow, original_capacity))
-
-        # Plot the flow in the residual graph
-        G = nx.DiGraph()
-        G.add_edges_from(edges)
-        pos = nx.spring_layout(G)
-        edge_labels = {
-            (u, v): f"{flow}/{capacity}"
-            for (u, v), (flow, capacity) in zip(edges, flows)
-        }
-
-        plt.figure(figsize=(12, 8))
-        nx.draw(
-            G,
-            pos,
-            with_labels=True,
-            node_size=700,
-            node_color="lightblue",
-            font_size=10,
-            font_weight="bold",
-            arrowsize=20,
-        )
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="red")
-        plt.title(f"Flow/Capacity in the Residual Graph\nMax Flow: {excess[self.sink]}")
-        plt.show()
-
         # Return the maximum flow, which is the excess flow at the sink
         return excess[self.sink]
 
