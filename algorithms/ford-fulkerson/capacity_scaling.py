@@ -1,15 +1,34 @@
 from collections import deque
 
 class Graph:
-    def __init__(self, vertices):
+    def __init__(self, vertices, graph):
+        self.graph = graph # Input graph
         self.V = vertices  # Number of vertices
-        self.graph = [[0] * vertices for _ in range(vertices)]  # Residual capacity matrix
+        self.residual_graph = [[0] * vertices for _ in range(vertices)]  # Residual capacity matrix
         self.max_capacity = 0  # Maximum capacity in the graph
+        self.create_residual_graph(graph)
 
     # Add edge with given capacity
     def add_edge(self, u, v, capacity):
-        self.graph[u][v] = capacity
+        self.residual_graph[u][v] = capacity
         self.max_capacity = max(self.max_capacity, capacity)
+
+    def create_residual_graph(self, graph):
+        for i in range(len(graph)):
+            for j in range(len(graph[i])):
+                self.add_edge(i, j, graph[i][j])
+                
+    def create_result_graph(self):
+        result = []
+        for u in range(len(self.graph)):
+            row = []
+            for v in range(len(self.graph)):
+                if self.graph[u][v] > 0:  # Only include edges with initial capacity
+                    row.append(f"{self.residual_graph[v][u]}/{self.graph[u][v]}")
+                else:
+                    row.append(0)
+            result.append(row)
+        return result
     
     # Perform BFS to find an augmenting path with residual capacity >= scaling factor
     def bfs(self, source, sink, parent, scaling_factor):
@@ -21,7 +40,7 @@ class Graph:
             u = queue.popleft()
 
             for v in range(self.V):
-                if not visited[v] and self.graph[u][v] >= scaling_factor:  # Residual capacity >= scaling factor
+                if not visited[v] and self.residual_graph[u][v] >= scaling_factor:  # Residual capacity >= scaling factor
                     queue.append(v)
                     visited[v] = True
                     parent[v] = u
@@ -47,15 +66,15 @@ class Graph:
                 path_flow = float('Inf')
                 s = sink
                 while s != source:
-                    path_flow = min(path_flow, self.graph[parent[s]][s])
+                    path_flow = min(path_flow, self.residual_graph[parent[s]][s])
                     s = parent[s]
 
                 # Update residual capacities of the edges and reverse edges along the path
                 v = sink
                 while v != source:
                     u = parent[v]
-                    self.graph[u][v] -= path_flow
-                    self.graph[v][u] += path_flow
+                    self.residual_graph[u][v] -= path_flow
+                    self.residual_graph[v][u] += path_flow
                     v = parent[v]
 
                 max_flow += path_flow  # Add path flow to the total flow
