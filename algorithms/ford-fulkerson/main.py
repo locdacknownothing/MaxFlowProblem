@@ -1,15 +1,8 @@
-from ford_fulkerson import Graph
-# from edmonds_karp import Graph
-# from capacity_scaling import Graph
+# from ford_fulkerson import Graph
+#from edmonds_karp import Graph
+from capacity_scaling import Graph
 
-def create_graph(graph):
-    g = Graph(len(graph))
-    for i in range(len(graph)):
-        for j in range(len(graph[i])):
-            g.add_edge(i, j, graph[i][j])
-    return g
-
-graph = [
+input = [
     [0, 16, 13, 0, 0, 0],
     [0, 0, 10, 12, 0, 0],
     [0, 4, 0, 0, 14, 0],
@@ -18,13 +11,10 @@ graph = [
     [0, 0, 0, 0, 0, 0]
 ]
 
-g = create_graph(graph)
+g = Graph(len(input), input)
 
 source = 0  # Source node
 sink = 5    # Sink node
 
-max_flow = g.ford_fulkerson(source, sink)
-
-print(g.graph)
-
-print("Maximum Flow:", max_flow)
+print("Maximum Flow:", g.capacity_scaling(source, sink))
+print("Result: ", g.create_result_graph())
