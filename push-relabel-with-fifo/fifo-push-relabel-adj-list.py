@@ -60,7 +60,7 @@ class DirectedGraph:
 
 
 # Represents the max flow calculation using the Push-Relabel algorithm
-class MaxFlow:
+class FifoPR:
     def __init__(self, graph, source, sink):
         self.graph = graph
         self.source = source
@@ -85,7 +85,7 @@ class MaxFlow:
                     self.residualGraph.addEdge(v.i, u, 0)
 
     # Implements the FIFO Push-Relabel algorithm to compute the maximum flow
-    def FIFOPushRelabel(self):
+    def process(self):
         self.initResidualGraph()
 
         # Initialize pre-flow values
@@ -190,5 +190,5 @@ dg.addEdge(3, 5, 20)
 dg.printGraph()
 
 # Calculate the maximum flow using FIFO Push-Relabel algorithm
-maxFlow = MaxFlow(dg, source, sink)
-print("Max flow:", maxFlow.FIFOPushRelabel())
+maxFlow = FifoPR(dg, source, sink)
+print("Max flow:", maxFlow.process())

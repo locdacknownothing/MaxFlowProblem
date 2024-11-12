@@ -1,5 +1,6 @@
-class MaxFlow:
+class FifoPushRelabel:
     def __init__(self, graph, source, sink):
+        self.graph = graph
         self.residual_graph = [row[:] for row in graph]  # Create a copy for the residual graph
         self.source = source
         self.sink = sink
@@ -12,8 +13,20 @@ class MaxFlow:
                 print(f"{self.residual_graph[u][v]:3}", end=" ")
             print()  # Newline for the next row
 
+    def result_flow_graph(self):
+        result = []
+        for u in range(self.n):
+            row = []
+            for v in range(self.n):
+                if self.graph[u][v] > 0:  # Only include edges with initial capacity
+                    row.append(f"{self.residual_graph[v][u]}/{self.graph[u][v]}")
+                else:
+                    row.append(0)
+            result.append(row)
+        return result
+
     # Implements the FIFO Push-Relabel algorithm on the residual graph
-    def FIFOPushRelabel(self):
+    def process(self):
         # Initialize pre-flow values
         queue = []
         excess = {u: 0 for u in range(self.n)}
@@ -93,5 +106,6 @@ dg = [
 ]
 
 # Create MaxFlow object with separate residual graph
-maxFlow = MaxFlow(dg, source, sink)
-print("Max flow:", maxFlow.FIFOPushRelabel())
+maxFlow = FifoPushRelabel(dg, source, sink)
+print("Max flow:", maxFlow.process())
+print("Result graph with flow/capacity:\n", maxFlow.result_flow_graph())
