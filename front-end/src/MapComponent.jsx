@@ -3,13 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
-
-const initialPoints = Array.from({ length: 20 }, (_, i) => ({
-  id: i,
-  lat: 10.762 + Math.random() * 0.05,
-  lng: 106.66 + Math.random() * 0.05,
-}));
-
+import dataPoints from './data/node_data2.json';
 const customIcon = new L.Icon({
   iconUrl: 'pin.png', 
   iconSize: [32, 35],
@@ -40,13 +34,28 @@ const MapWrapper = ({ mapRef }) => {
 };
 
 const MapComponent = () => {
+  // const [dataPoints, setDataPoints] = useState([]); // State to store points from data.json
   const [selectedPoints, setSelectedPoints] = useState([]); 
   const mapRef = useRef(null); 
   const routingControlRef = useRef(null); 
 
+  // Load data from data.json on component mount
+  // useEffect(() => {
+  //   fetch('C:/Users/gguu/Project/MaxFlowProblem/data/results/node_data3.json')
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       const formattedPoints = data.map((point) => ({
+  //         id: point.node_id,
+  //         lat: point.lat,
+  //         lng: point.lon,
+  //       }));
+  //       setDataPoints(formattedPoints);
+  //     })
+  //     .catch((error) => console.error('Error loading data:', error));
+  // }, []);
+
   const handlePointClick = (point) => {
     if (selectedPoints.length >= 2) return; 
-    console.log(point)
     setSelectedPoints((prevPoints) => [...prevPoints, point]); 
   };
 
@@ -56,12 +65,13 @@ const MapComponent = () => {
     if (routingControlRef.current) {
       routingControlRef.current.remove();
     }
-    // call api to get list points
+
     const listPoints = [
       {lat: 10.775593970389078, lng: 106.68259406549535},
       {lat: 10.777633749235925, lng: 106.68238189411164},
       {lat: 10.786236010591294, lng: 106.69771786704939},
-    ]
+    ];
+
     routingControlRef.current = L.Routing.control({
       waypoints: listPoints.map((point) => L.latLng(point.lat, point.lng)),
       lineOptions: {
@@ -94,16 +104,16 @@ const MapComponent = () => {
           attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <MapWrapper mapRef={mapRef} />
-        {initialPoints.map((point) => (
+        {dataPoints.map((point) => (
           <Marker
             key={point.id}
-            position={[point.lat, point.lng]}
+            position={[point.lat, point.lon]}
             icon={customIcon}
             eventHandlers={{
               click: () => handlePointClick(point),
             }}
           >
-            <Popup>Điểm {point.id + 1}</Popup>
+            <Popup>{point.display_name}</Popup>
           </Marker>
         ))}
       </MapContainer>
