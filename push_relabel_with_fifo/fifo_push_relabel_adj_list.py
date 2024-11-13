@@ -167,28 +167,28 @@ class FifoPR:
             in_queue[u] = True
 
 
-# Example usage
-source = 0
-sink = 5
+# # Example usage
+# source = 0
+# sink = 5
 
-# Create the graph
-dg = DirectedGraph()
+# # Create the graph
+# dg = DirectedGraph()
 
-# Add edges with capacities
-dg.addEdge(0, 1, 16)
-dg.addEdge(0, 2, 13)
-dg.addEdge(1, 2, 10)
-dg.addEdge(2, 1, 4)
-dg.addEdge(1, 3, 12)
-dg.addEdge(3, 2, 9)
-dg.addEdge(2, 4, 14)
-dg.addEdge(4, 5, 4)
-dg.addEdge(4, 3, 7)
-dg.addEdge(3, 5, 20)
+# # Add edges with capacities
+# dg.addEdge(0, 1, 16)
+# dg.addEdge(0, 2, 13)
+# dg.addEdge(1, 2, 10)
+# dg.addEdge(2, 1, 4)
+# dg.addEdge(1, 3, 12)
+# dg.addEdge(3, 2, 9)
+# dg.addEdge(2, 4, 14)
+# dg.addEdge(4, 5, 4)
+# dg.addEdge(4, 3, 7)
+# dg.addEdge(3, 5, 20)
 
-# Print the graph's adjacency list
-dg.printGraph()
+# # Print the graph's adjacency list
+# dg.printGraph()
 
-# Calculate the maximum flow using FIFO Push-Relabel algorithm
-maxFlow = FifoPR(dg, source, sink)
-print("Max flow:", maxFlow.process())
+# # Calculate the maximum flow using FIFO Push-Relabel algorithm
+# maxFlow = FifoPR(dg, source, sink)
+# print("Max flow:", maxFlow.process())

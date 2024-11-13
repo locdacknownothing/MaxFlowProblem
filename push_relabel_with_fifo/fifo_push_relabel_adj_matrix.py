@@ -53,7 +53,7 @@ class FifoPushRelabel:
                     inQueue[v] = True
 
         # Print the graph after initialization
-        self.print_graph()
+        # self.print_graph()
 
         # Process each vertex in the queue
         while queue:
@@ -93,19 +93,19 @@ class FifoPushRelabel:
 
 
 # Example usage
-source = 0
-sink = 5
-# Original adjacency matrix
-dg = [
-    [0, 16, 13, 0, 0, 0], 
-    [0, 0, 10, 12, 0, 0], 
-    [0, 4, 0, 0, 14, 0], 
-    [0, 0, 9, 0, 0, 20], 
-    [0, 0, 0, 7, 0, 4], 
-    [0, 0, 0, 0, 0, 0]
-]
+# source = 0
+# sink = 5
+# # Original adjacency matrix
+# dg = [
+#     [0, 16, 13, 0, 0, 0], 
+#     [0, 0, 10, 12, 0, 0], 
+#     [0, 4, 0, 0, 14, 0], 
+#     [0, 0, 9, 0, 0, 20], 
+#     [0, 0, 0, 7, 0, 4], 
+#     [0, 0, 0, 0, 0, 0]
+# ]
 
 # Create MaxFlow object with separate residual graph
-maxFlow = FifoPushRelabel(dg, source, sink)
-print("Max flow:", maxFlow.process())
-print("Result graph with flow/capacity:\n", maxFlow.result_flow_graph())
+# maxFlow = FifoPushRelabel(dg, source, sink)
+# print("Max flow:", maxFlow.process())
+# print("Result graph with flow/capacity:\n", maxFlow.result_flow_graph())
