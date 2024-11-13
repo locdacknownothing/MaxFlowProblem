@@ -6,8 +6,8 @@ function App() {
   return (
     <div className="App">
       <h1>Max flow problem</h1>
-      {/* <MapComponent /> */}
-      <TempComponent />
+      <MapComponent />
+      {/* <TempComponent /> */}
     </div>
   );
 }
