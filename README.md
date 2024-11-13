@@ -10,3 +10,5 @@ pip install -r back_end/requirements.txt
 python -m back_end.main
 ```
 - The app will be available at the address [http://127.0.0.1:5000](http://127.0.0.1:5000). The APIs will accept the values of "source" and "sink" to run the algorithm and return the max flow value and the result matrix.
+
+  ![API Response](ApiResponse.png)
