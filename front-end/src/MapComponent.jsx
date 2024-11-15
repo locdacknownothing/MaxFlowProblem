@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import dataPoints from "./data/full_node_data.json";
+import dataEdges from "./data/full_edge_data.json";
+
 const customIcon = new L.Icon({
   iconUrl: "pin.png",
   iconSize: [32, 35],
@@ -34,25 +36,9 @@ const MapWrapper = ({ mapRef }) => {
 };
 
 const MapComponent = () => {
-  // const [dataPoints, setDataPoints] = useState([]); // State to store points from data.json
   const [selectedPoints, setSelectedPoints] = useState([]);
   const mapRef = useRef(null);
   const routingControlRef = useRef(null);
-
-  // Load data from data.json on component mount
-  // useEffect(() => {
-  //   fetch('C:/Users/gguu/Project/MaxFlowProblem/data/results/node_data3.json')
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const formattedPoints = data.map((point) => ({
-  //         id: point.node_id,
-  //         lat: point.lat,
-  //         lng: point.lon,
-  //       }));
-  //       setDataPoints(formattedPoints);
-  //     })
-  //     .catch((error) => console.error('Error loading data:', error));
-  // }, []);
 
   const handlePointClick = (point) => {
     if (selectedPoints.length >= 2) return;
@@ -64,16 +50,11 @@ const MapComponent = () => {
 
     if (routingControlRef.current) {
       routingControlRef.current.remove();
+      routingControlRef.current = null;
     }
 
-    const listPoints = [
-      { lat: 10.775593970389078, lng: 106.68259406549535 },
-      { lat: 10.777633749235925, lng: 106.68238189411164 },
-      { lat: 10.786236010591294, lng: 106.69771786704939 },
-    ];
-
     routingControlRef.current = L.Routing.control({
-      waypoints: listPoints.map((point) => L.latLng(point.lat, point.lng)),
+      waypoints: selectedPoints.map((point) => L.latLng(point.lat, point.lon)),
       lineOptions: {
         styles: [{ color: "#024EC0", opacity: 0.8, weight: 4 }],
       },
@@ -104,6 +85,9 @@ const MapComponent = () => {
           attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <MapWrapper mapRef={mapRef} />
+        {dataEdges.map((edge, index) => (
+         <Polyline key={index} positions={[[dataPoints[edge.src].lat, dataPoints[edge.src].lon], [dataPoints[edge.dst].lat, dataPoints[edge.dst].lon]]} color="blue" />
+        ))}
         {dataPoints.map((point) => (
           <Marker
             key={point.id}
@@ -113,7 +97,7 @@ const MapComponent = () => {
               click: () => handlePointClick(point),
             }}
           >
-            <Popup>{point.display_name}</Popup>
+            <Popup>{point.index}</Popup>
           </Marker>
         ))}
       </MapContainer>
