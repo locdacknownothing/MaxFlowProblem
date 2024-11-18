@@ -1,10 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  Polyline,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-routing-machine";
-import dataPoints from "./data/full_node_data.json";
-import dataEdges from "./data/full_edge_data.json";
+import dataPoints from "./data/manual_node_data.json";
+import dataEdges from "./data/manual_edge_data.json";
 
 const customIcon = new L.Icon({
   iconUrl: "pin.png",
@@ -85,21 +92,31 @@ const MapComponent = () => {
           attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <MapWrapper mapRef={mapRef} />
-        {dataEdges.map((edge, index) => (
-         <Polyline key={index} positions={[[dataPoints[edge.src].lat, dataPoints[edge.src].lon], [dataPoints[edge.dst].lat, dataPoints[edge.dst].lon]]} color="blue" />
-        ))}
-        {dataPoints.map((point) => (
-          <Marker
-            key={point.id}
-            position={[point.lat, point.lon]}
-            icon={customIcon}
-            eventHandlers={{
-              click: () => handlePointClick(point),
-            }}
-          >
-            <Popup>{point.index}</Popup>
-          </Marker>
-        ))}
+        {!!dataEdges &&
+          dataEdges.map((edge, index) => (
+            <Polyline
+              key={index}
+              positions={[
+                [dataPoints[edge.src].lat, dataPoints[edge.src].lon],
+                [dataPoints[edge.dst].lat, dataPoints[edge.dst].lon],
+              ]}
+              color="blue"
+            />
+          ))}
+        {!!dataPoints &&
+          dataPoints.map((point) => (
+            <Marker
+              key={point.id}
+              position={[point.lat, point.lon]}
+              icon={customIcon}
+              eventHandlers={{
+                click: () => handlePointClick(point),
+              }}
+            >
+              {/* Change this to see what needed */}
+              <Popup>{`${point.index} ${point.node_id} ${point.lat} ${point.lon}`}</Popup>
+            </Marker>
+          ))}
       </MapContainer>
       {selectedPoints.length === 2 && (
         <button onClick={handleReset} style={{ marginTop: "10px" }}>
