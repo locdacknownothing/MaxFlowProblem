@@ -1,26 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import 'leaflet-routing-machine';
-import dataPoints from './data/node_data3.json';
+import React, { useState, useRef, useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import "leaflet-routing-machine";
+import dataPoints from "./data/manual_node_data.json";
 
 const customIcon = new L.Icon({
-  iconUrl: 'pin.png',
+  iconUrl: "pin.png",
   iconSize: [32, 35],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
 });
 
 const startIcon = new L.Icon({
-  iconUrl: 'start_icon.png',
+  iconUrl: "start_icon.png",
   iconSize: [16, 16],
   iconAnchor: [16, 16],
   popupAnchor: [0, 0],
 });
 
 const endIcon = new L.Icon({
-  iconUrl: 'end_icon.png',
+  iconUrl: "end_icon.png",
   iconSize: [32, 35],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
@@ -53,11 +53,11 @@ const TempComponent = () => {
 
   const handleExport = () => {
     const data = JSON.stringify(selectedPoints, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
+    const blob = new Blob([data], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'selected_points.json';
+    link.download = "selected_points.json";
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -65,17 +65,17 @@ const TempComponent = () => {
   return (
     <div>
       {selectedPoints.length > 0 && (
-        <div style={{ marginTop: '10px' }}>
+        <div style={{ marginTop: "10px" }}>
           <button onClick={handleExport}>Export</button>
-          <button onClick={handleReset} style={{ marginRight: '10px' }}>
-              Reset
+          <button onClick={handleReset} style={{ marginRight: "10px" }}>
+            Reset
           </button>
         </div>
       )}
       <MapContainer
         center={[10.762622, 106.660172]}
         zoom={13}
-        style={{ height: '700px', width: '100%' }}
+        style={{ height: "700px", width: "100%" }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -91,7 +91,9 @@ const TempComponent = () => {
               click: () => handlePointClick(point),
             }}
           >
-            <Popup>{point.lat},{point.lon}</Popup>
+            <Popup>
+              {point.lat},{point.lon}
+            </Popup>
           </Marker>
         ))}
       </MapContainer>
