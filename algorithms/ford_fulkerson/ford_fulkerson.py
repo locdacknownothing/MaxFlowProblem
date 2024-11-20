@@ -20,7 +20,7 @@ class Graph:
             row = []
             for v in range(len(self.graph)):
                 if self.graph[u][v] > 0:  # Only include edges with initial capacity
-                    row.append(f"{self.residual_graph[v][u]}/{self.graph[u][v]}")
+                    row.append(f"{self.residual_graph[u][v]}/{self.graph[u][v]}")
                 else:
                     row.append(0)
             result.append(row)
