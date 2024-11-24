@@ -183,6 +183,6 @@ class MPM:
         for i in range(0, len(self.edges)):
             start_node = self.edges[i].start_node
             end_node = self.edges[i].end_node
-            if self.edges[i].flow > 0:
+            if self.edges[i].cap > 0:
                 value_matrix[start_node][end_node] = str(self.edges[i].flow) + '/' + str(self.edges[i].cap)
         return value_matrix

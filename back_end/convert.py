@@ -1,4 +1,11 @@
-def adj_matrix2edges(matrix):
+import numpy as np 
+
+def adj_matrix2edges(matrix): 
+    try:
+        print(np.array(matrix))
+    except:
+        pass
+    
     edges = []
 
     for i in range(len(matrix)):
