@@ -171,18 +171,18 @@ class MPM:
                 self.remove_node(start_node)
         return ans
     
-    def pre_process(self, name_matrix, value_matrix):
-        mpm = MPM(len(name_matrix), name_matrix[2], name_matrix[0])
-        for i in range(0, len(name_matrix)):
-            for j in range(0, len(name_matrix)):
+    def pre_process(self, start, sink, value_matrix):
+        mpm = MPM(len(value_matrix[0]), start, sink)
+        for i in range(0, len(value_matrix[0])):
+            for j in range(0, len(value_matrix[0])):
                 if value_matrix[i][j] != 0:
-                    mpm.add_edge(name_matrix[i], name_matrix[j], int(1/value_matrix[i][j]))
+                    mpm.add_edge(i, j, value_matrix[i][j])
         return mpm
     
-    def post_process(self, name_matrix, value_matrix):
+    def post_process(self, value_matrix):
         for i in range(0, len(self.edges)):
             start_node = self.edges[i].start_node
             end_node = self.edges[i].end_node
             if self.edges[i].flow > 0:
-                value_matrix[name_matrix.index(start_node)][name_matrix.index(end_node)] = str(self.edges[i].flow) + '/' + str(self.edges[i].cap)
+                value_matrix[start_node][end_node] = str(self.edges[i].flow) + '/' + str(self.edges[i].cap)
         return value_matrix
