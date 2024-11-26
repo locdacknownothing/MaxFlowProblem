@@ -16,7 +16,7 @@ import axios from "axios";
 
 const customIcon = new L.Icon({
   iconUrl: "pin.png",
-  iconSize: [32, 35],
+  iconSize: [38, 42],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
 });
@@ -44,10 +44,11 @@ const MapWrapper = ({ mapRef }) => {
 };
 
 const algorithms = {
-  mpm: "Ford Fulkerson",
+  ford_fulkerson: "Ford Fulkerson",
   edmonds_karp: "Edmonds Karp",
   capacity_scaling: "Capacity Scaling",
   fifo_push_relabel: "FIFO Push Relabel",
+  mpm: "MPM",
 };
 
 const MapComponent = () => {
@@ -61,37 +62,6 @@ const MapComponent = () => {
     if (selectedPoints.length >= 2) return;
     setSelectedPoints((prevPoints) => [...prevPoints, point]);
   };
-
-  // useEffect(async () => {
-  //   if (!mapRef.current || selectedPoints.length < 2) return;
-
-  //   if (routingControlRef.current) {
-  //     routingControlRef.current.remove();
-  //     routingControlRef.current = null;
-  //   }
-
-  //   // const response = await axios.post(
-  //   //   `http://localhost:3000/${selectedAlgorithm}`,
-  //   //   {
-  //   //     source: parseInt(selectedPoints[0].node_id),
-  //   //     sink: parseInt(selectedPoints[1].node_id),
-  //   //   }
-  //   // );
-
-  //   // console.log(response.data);
-
-  //   routingControlRef.current = L.Routing.control({
-  //     waypoints: selectedPoints.map((point) => L.latLng(point.lat, point.lon)),
-  //     lineOptions: {
-  //       styles: [{ color: "#024EC0", opacity: 0.8, weight: 4 }],
-  //     },
-  //     createMarker: (i, waypoint, n) => {
-  //       const icon = i === 0 ? startIcon : i === n - 1 ? endIcon : startIcon;
-  //       return L.marker(waypoint.latLng, { icon });
-  //     },
-  //     show: false,
-  //   }).addTo(mapRef.current);
-  // }, [selectedPoints]);
 
   useEffect(() => {
     const updateRoutingControl = async () => {
@@ -198,7 +168,7 @@ const MapComponent = () => {
           onClick={handleReset}
           style={{ marginTop: "10px" }}
         >
-          Chọn lại điểm
+          Reset points
         </button>
       )}
       <MapContainer
@@ -211,17 +181,6 @@ const MapComponent = () => {
           attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         <MapWrapper mapRef={mapRef} />
-        {/* {!!dataEdges &&
-          dataEdges.map((edge, index) => (
-            <Polyline
-              key={index}
-              positions={[
-                [dataPoints[edge.src].lat, dataPoints[edge.src].lon],
-                [dataPoints[edge.dst].lat, dataPoints[edge.dst].lon],
-              ]}
-              color="blue"
-            />
-          ))} */}
         {edges &&
           edges.map((edge, index) => {
             const srcPoint = dataPoints[edge.src];
